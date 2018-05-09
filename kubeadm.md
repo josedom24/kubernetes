@@ -121,3 +121,23 @@ Y comprobamos que todos los pods del espacio de nombres `kube-system` están fun
     kube-proxy-xqsmg                           1/1          Running   0          1d
     kube-scheduler-k8s-1                       1/1          Running   0          1d
 
+## Uniendo los nodos al cluster
+
+En cada nodo que va a formar parte del cluster tenemos que ejecutar, como superusuario, el comando que nos ofreció el comando `kubeadm` al iniciar el cluster en el master:
+
+    kubeadm join --token <token> <master-ip>:<master-port>
+    ...
+    Node join complete:
+    * Certificate signing request sent to master and response
+      received.
+    * Kubelet informed of new secure connection details.	
+
+    Run 'kubectl get nodes' on the master to see this machine join.
+
+Y finalmente desde el master podemos obtener los nodos que forman el cluster:
+
+    # kubectl get nodes
+    NAME      STATUS    ROLES     AGE       VERSION
+    k8s-1     Ready     master    1d        v1.10.2
+    k8s-2     Ready     <none>    1d        v1.10.2
+    k8s-3     Ready     <none>    1d        v1.10.2
