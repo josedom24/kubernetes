@@ -141,3 +141,37 @@ Y finalmente desde el master podemos obtener los nodos que forman el cluster:
     k8s-1     Ready     master    1d        v1.10.2
     k8s-2     Ready     <none>    1d        v1.10.2
     k8s-3     Ready     <none>    1d        v1.10.2
+
+## Acceso desde un cliente externo
+
+Normalmente vamos a interactuar con el cluster desde un clinete externo donde tengamos instaldo `kubectl`. Para instalar `kubectl`, siguiendo las [instrucciones oficiales](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-native-package-management), ejecutamos:
+
+    apt-get update && apt-get install -y apt-transport-https
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+    deb http://apt.kubernetes.io/ kubernetes-xenial main
+    EOF
+    apt-get update
+    apt-get install -y kubectl
+
+Y para configurar el acceso al cluster:
+
+1. Desde el nodo master damos permisos de lectura al fichero `/etc/kubernetes/admin.conf`:
+
+        chmod 644 /etc/kubernetes/admin.conf
+
+2. Desde el cliente:
+
+        export IP_MASTER=172.22.201.15
+        sftp debian@${IP_MASTER}
+        sftp> get /etc/kubernetes/admin.conf
+        sftp> exit
+
+        mv admin.conf ~/.kube/mycluster.conf
+        sed -i -e "s#server: https://.*:6443#server: https://${IP_MASTER}:6443#g" ~/.kube/mycluster.conf
+        export KUBECONFIG=~/.kube/mycluster.conf
+
+Y comprobamos que tenemos acceso al cluster:
+
+    $ kubectl cluster-info
+    Kubernetes master is running at https://172.22.201.15:6443
