@@ -175,3 +175,13 @@ Y comprobamos que tenemos acceso al cluster:
 
     $ kubectl cluster-info
     Kubernetes master is running at https://172.22.201.15:6443
+
+## Puertos necesarios para acceder al cluster de Kubernetes
+
+Si instalamos el cluster en instancias de un servicio cloud de infraestuctura hay que tener en cuanta que los siguientes puertos deben estar accesibles:
+
+* `80`: Para acceder a los servicios con el controlador `Ingress`.
+* `443`: Para acceder a los servicios con el controlador `Ingress` y HTTPS.
+* `6443`: Para acceder a la API de Kubernetes.
+* `30000-40000`: Para acceder a las aplicaciones con el servicio `NodePort`.
+* `8001`: Si accedemos a las aplicaciones con el proxy de Kubernetes.
