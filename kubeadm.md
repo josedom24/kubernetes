@@ -1,5 +1,5 @@
 # Instalación de kubernetes con kubeadm
-
+[Kubernetes](https://kubernetes.io/) es un sistema de código abierto que nos permite despliegues automáticos, escabilidad y gestión de contenedores de aplicaiones.
 [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) es una herramienta que nos permite el despliegue de un cluster de kubernetes de manera sencilla. El cluster lo podemos crear en máquinas físicas o virtuales, en nuestro caso, vamos a usar Debian 9 en 3 máquinas virtuales para realizar la instalación.
 
 ## Instalación de los paquetes necesarios
