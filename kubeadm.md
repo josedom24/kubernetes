@@ -68,7 +68,7 @@ Este comando inicializa el cluster, hemos indicado le CIDR de la red por donde s
 
 > Estoy utilizando como instraestructura tres instancias de OpenStack, es necesario indicar el parámetro `--apiserver-cert-extra-sans` con la IP flotante del master para que el certificado que se genera sea válido para esta ip, y se pueda controlar el cluster desde el exterior.
 
-    Cuando termina muestra un mensaje similar a este:
+Cuando termina muestra un mensaje similar a este:
 
     Your Kubernetes master has initialized successfully!	
 
