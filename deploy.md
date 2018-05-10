@@ -32,6 +32,6 @@ Los distintos recursos de Kubernetes nos proporcionan distintas características
   * Migraciones sencillas
   * Monitorización
   * Control de acceso basada en Roles
-  * Integración y despliegue continúa
+  * Integración y despliegue continuo
 
 En los siguientes apartados vamos a estudiando cada uno de estos recursos.
