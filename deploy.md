@@ -1,3 +1,3 @@
 # Desplegando una aplicación en Kubernetes
 
-![despliegue](img/deploy.png)
+![despliegue](img/deploy1.png)
