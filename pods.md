@@ -91,7 +91,7 @@ Para obtener los logs del pod:
 
 Si quiero conectarme al contenedor:
 
-    kubectl exec -it nginx /bin/bash
+    kubectl exec -it nginx -- /bin/bash
     root@nginx:/# 
 
 Podemos acceder a la aplicación, redirigiendo un puerto de localhost al puerto de la aplicación:
@@ -102,3 +102,41 @@ Podemos acceder a la aplicación, redirigiendo un puerto de localhost al puerto 
 
 Y accedemos al servidor web en la url `http://localhost:8080`.
 
+## Labels
+
+Las [Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) nos permiten etiquetar los recursos de kubernetes (por ejemplo un pod) con información del tipo clave/valor.
+
+Para obtener las labels de los pods que hemos creado:
+
+    kubectl get pods --show-labels
+    NAME      READY     STATUS    RESTARTS   AGE       LABELS
+    nginx     1/1       Running   0          10m       app=nginx
+
+Los `Labels` lo hemos definido en la sección `metada` del fichero yaml, pero también podemos añadirlos a los pods ya creados:
+
+    kubectl label pods nginx service=web
+    pod "nginx" labeled
+
+    kubectl get pods --show-labels
+    NAME      READY     STATUS    RESTARTS   AGE       LABELS
+    nginx     1/1       Running   0          12m       app=nginx,service=web
+
+Los `Labels` me van a permitir seleccionar un recurso determinado, por ejemplo para visualizar los pods que tienen un `label` con un determinado valor:
+
+    kubectl get pods -l service=web
+    NAME      READY     STATUS    RESTARTS   AGE
+    nginx     1/1       Running   0          13m
+
+También podemos visualizar los valores delos `labels` como una nueva columna:
+
+    kubectl get pods -Lservice
+    NAME      READY     STATUS    RESTARTS   AGE       SERVICE
+    nginx     1/1       Running   0          15m       web
+
+## Modificando las características de un pod creado
+
+Podemos modificar las características de cualquier recurso de kubernetes una vez creado, por ejemplo podemos modificar la definición del pod de la siguiente manera:
+
+    kubectl edit pod nginx
+
+se abrirá un editor de texto donde veremos el fichero Yaml que define el recurso, podemos ver todos los parámetros que se han definido con valores por defecto, al no tenerlo definidos en el fichero de creación del pod `nginx.yaml`.
