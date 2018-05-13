@@ -18,7 +18,7 @@ El escenario anterior se podría montar en Kubernetes de la siguiente forma:
 Los distintos recursos de Kubernetes nos proporcionan distintas características muy deseadas:
 
 * `Pods`: La unidad mínima de computación en Kubernetes, permite ejecutar contenedores. Representa un conjunto de contenedores y almacenamiento compartido que comparte una única IP.
-* `ReplicaSet`: Recurso de un cluster Kubernetes que asegura que siempre se ejecute un número de replicas de pod. Nos proporciona las siguientes características:
+* `ReplicaSet`: Recurso de un cluster Kubernetes que asegura que siempre se ejecute un número de replicas de un pod determinado. Nos proporciona las siguientes características:
   * Que no haya caída del servicio
   * Tolerancia a errores
   * Escabilidad dinámica
