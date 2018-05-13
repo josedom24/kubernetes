@@ -1,0 +1,1 @@
+# Recursos de Kubernetes: ReplicaSet
