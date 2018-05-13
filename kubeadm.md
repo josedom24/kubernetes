@@ -184,4 +184,3 @@ Si instalamos el cluster en instancias de un servicio cloud de infraestuctura ha
 * `443`: Para acceder a los servicios con el controlador `Ingress` y HTTPS.
 * `6443`: Para acceder a la API de Kubernetes.
 * `30000-40000`: Para acceder a las aplicaciones con el servicio `NodePort`.
-* `8001`: Si accedemos a las aplicaciones con el proxy de Kubernetes.
