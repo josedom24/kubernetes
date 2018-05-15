@@ -33,7 +33,7 @@ Vamos a ver un ejemplo de definición de ReplicaSet en el fichero [`nginx-rs.yam
 
 * `replicas`: Indicamos el número de pos que siempre se van a estar ejecutando.
 * `selector`: Indicamos el pods que vamos a replicar y vamos a controlar con el ReplicaSet. En este caso va a controlar pods que tenga un *label* `app` cuyo valor sea `nginx`.
-* `template`: El recurso `ReplicaSet` contiene la definción de un `pod`.
+* `template`: El recurso `ReplicaSet` contiene la definición de un `pod`.
 
 Al crear el `ReplicaSet` se crearán los pods que hemos indicado como número de replicas:
 
@@ -79,7 +79,7 @@ En cualquier momento puedo escalar el número de pods que queremos que se ejecut
     nginx-ssblp   1/1       Running   0          46s
     nginx-xxg4j   1/1       Running   0          46s
 
-Como anterior vimos podemos modficar las características de un `ReplicaSet` con la siguiente instrucción:
+Como anteriormente vimos podemos modificar las características de un `ReplicaSet` con la siguiente instrucción:
 
     kubectl edit rs nginx
 
