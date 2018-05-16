@@ -1,0 +1,21 @@
+﻿apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: guestbook
+  labels:
+    app: guestbook
+    tier: frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+    spec:
+      containers:
+      - name: guestbook
+        image: gcr.io/google_containers/guestbook:v3
+        ports:
+          - name: http-server
+            containerPort: 3000

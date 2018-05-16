@@ -1,0 +1,32 @@
+﻿apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-slave
+  labels:
+    app: redis
+    role: slave
+    tier: backend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: slave
+        tier: backend
+    spec:
+      containers:
+        - name: slave
+          image: redis
+          ports:
+            - name: redis-server
+              containerPort: 6379
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: REDIS_REPLICATION_MODE
+              value: slave
+            - name: REDIS_MASTER_HOST
+              value: redis-master
+            - name: REDIS_MASTER_PORT_NUMBER
+              value: "6379"
