@@ -75,3 +75,41 @@ Se ha creado un nuevo `RecordSet` y un nuevo pods.
 Y comprobamos el historial de versiones del despliegue:
 
     kubectl rollout history deployment/mediawiki
+    deployments "mediawiki"
+    REVISION  CHANGE-CAUSE
+    1         kubectl run mediawiki --image=mediawiki --record=true
+    2         kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27 --all=true
+
+Podríamos volver a la versión anterior con la instrucción `kubectl rollout undo` pero vamos a realizar una nueva modifcando, indicando una versión de la imagen que no existe, por lo que se va producir un error al crear el pod y es entonces cuando vamos a realizar el *rollback* a la versión anterior.
+
+    kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all
+    deployment.apps "mediawiki" image updated
+    
+    kubectl get pods
+    NAME                        READY     STATUS         RESTARTS   AGE
+    mediawiki-69684f6ff-z9bvb   0/1       ErrImagePull   0          <invalid>
+
+Y podemos ver la lista de modificaciones:
+    
+    kubectl rollout history deployment/mediawiki
+    deployments "mediawiki"
+    REVISION  CHANGE-CAUSE
+    1         kubectl run mediawiki --image=mediawiki --record=true
+    2         kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27   --all=true
+    3         kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all=true
+
+Para volver a la versión anterior de la aplicación:
+
+    kubectl rollout undo deployment/mediawiki
+    deployment.apps "mediawiki" 
+        
+    kubectl get pods
+    NAME                         READY     STATUS    RESTARTS   AGE
+    mediawiki-69f8b7464c-w8vqn   1/1       Running   0          5s
+    
+    kubectl rollout history deployment/mediawiki
+    deployments "mediawiki"
+    REVISION  CHANGE-CAUSE
+    1         kubectl run mediawiki --image=mediawiki --record=true
+    3         kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all=true
+    4         kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27   --all=true
