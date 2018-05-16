@@ -200,12 +200,13 @@ La información de configuración del cluter la podemos manejar con la instrucci
         client-certificate-data: REDACTED
         client-key-data: REDACTED
 
-Como vemos sólo tenemos un contexto (un contexto determina el cluter y el usuario que podemos utilizar), para obtener información del contexto:
+Como vemos sólo tenemos un contexto (un contexto determina el cluter y el usuario que podemos utilizar), para obtener información del cluster y del contexto:
 
     kubectl config get-clusters
     NAME
     kubernetes
-    jose@debian:~$ kubectl config get-contexts
+
+    kubectl config get-contexts
     CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
     *         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
 
