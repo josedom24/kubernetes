@@ -176,6 +176,39 @@ Y comprobamos que tenemos acceso al cluster:
     $ kubectl cluster-info
     Kubernetes master is running at https://172.22.201.15:6443
 
+La información de configuración del cluter la podemos manejar con la instrucción `kubectl config`, de esta manera para obtener los detalles de la configuración que estamos usando:
+
+    kubectl config view
+
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority-data: REDACTED
+        server: https://172.22.201.15:6443
+      name: kubernetes
+    contexts:
+    - context:
+        cluster: kubernetes
+        user: kubernetes-admin
+      name: kubernetes-admin@kubernetes
+    current-context: kubernetes-admin@kubernetes
+    kind: Config
+    preferences: {}
+    users:
+    - name: kubernetes-admin
+      user:
+        client-certificate-data: REDACTED
+        client-key-data: REDACTED
+
+Como vemos sólo tenemos un contexto (un contexto determina el cluter y el usuario que podemos utilizar), para obtener información del contexto:
+
+    kubectl config get-clusters
+    NAME
+    kubernetes
+    jose@debian:~$ kubectl config get-contexts
+    CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+    *         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   
+
 ## Puertos necesarios para acceder al cluster de Kubernetes
 
 Si instalamos el cluster en instancias de un servicio cloud de infraestuctura hay que tener en cuanta que los siguientes puertos deben estar accesibles:
