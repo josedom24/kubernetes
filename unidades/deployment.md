@@ -68,4 +68,84 @@ Cuando creamos un `Deployment`, se crea el `ReplicaSet` asociado y todos los pod
     nginx-84f79f5cdd-b2bn5   1/1       Running   0          56s
     nginx-84f79f5cdd-cz474   1/1       Running   0          56s
 
+Como ocurría con los `replicaSets` los `Deployment` también se pueden escalar, aumentando o disminuyendo el número de pods asociados:
+
+    kubectl scale deployment nginx --replicas=4
+    deployment.extensions "nginx" scaled
+    
+    kubectl get rs
+    NAME               DESIRED   CURRENT   READY     AGE
+    nginx-84f79f5cdd   4         4         4         2m
+    
+    kubectl get pods
+    NAME                     READY     STATUS    RESTARTS   AGE
+    nginx-84f79f5cdd-7kzls   1/1       Running   0          2m
+    nginx-84f79f5cdd-8zrcb   1/1       Running   0          2m
+    nginx-84f79f5cdd-b2bn5   1/1       Running   0          2m
+    nginx-84f79f5cdd-cz474   1/1       Running   0          2m
+
+## Actualización del deployment
+
+Podemos cambiar en cualquier momentos las propiedades del `deployment`, por ejemplo para hacer una actualización de la aplicación:
+
+    kubectl set image deployment nginx nginx=nginx:1.13 --all
+    deployment.apps "nginx" image updated
+
+También podríamos haber cambiado la versión de la imagen modificando la definición Yaml del `Deployment` con la siguiente instrucción:
+
+    kubectl edit deployment nginx
+
+Y comprobamos que se ha creado un nuevo `RecordSet`, y unos nuevos pods con la nueva versión de la imagen.
+
+    kubectl get rs
+    NAME               DESIRED   CURRENT   READY     AGE
+    nginx-75f9c7b459   4         4         3         5s
+    nginx-84f79f5cdd   0         0         0         6m
+    
+    kubectl get pods
+    NAME                     READY     STATUS    RESTARTS   AGE
+    nginx-75f9c7b459-87l5j   1/1       Running   0          5s
+    nginx-75f9c7b459-92x8s   1/1       Running   0          5s
+    nginx-75f9c7b459-fm6g5   1/1       Running   0          5s
+    nginx-75f9c7b459-pz78j   1/1       Running   0          5s
+
+La opción `--all` fuerza a actualizar todos los pods aunque no estén inicializados. 
+
+## Rollback de nuestra aplicación
+
+Si queremos volver a la versión anterior de nuestro despliegue, tenemos que ejecutar:
+
+    kubectl rollout undo deployment/nginx
+    deployment.apps "nginx" 
+
+T comprobamos como se activa el antiguo `RecordSet` y se crean nuevos pods con la versión anterior de nuestra aplicación:
+    
+    kubectl get rs
+    NAME               DESIRED   CURRENT   READY     AGE
+    nginx-75f9c7b459   0         0         0         1h
+    nginx-84f79f5cdd   4         4         4         22h
+  
+    kubectl get pods
+    NAME                     READY     STATUS    RESTARTS   AGE
+    nginx-84f79f5cdd-cwgzx   1/1       Running   0          5s
+    nginx-84f79f5cdd-hmd2l   1/1       Running   0          5s
+    nginx-84f79f5cdd-rhnkg   1/1       Running   0          5s
+    nginx-84f79f5cdd-vn7kd   1/1       Running   0          5s
+
+## Eliminando el despliegue
+
+Si eliminamos el `Deployment` se eliminarán el `RecordSet` asociado y los pods que se estaban gestionando.
+
+    kubectl delete deployment nginx
+    deployment.extensions "nginx" deleted
+    
+    kubectl get deploy
+    No resources found.
+    
+    kubectl get rs
+    No resources found.
+    
+    kubectl get pods
+    No resources found.
+
 
