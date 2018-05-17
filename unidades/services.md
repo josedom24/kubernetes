@@ -26,9 +26,9 @@ Cuando se crea un nuevo servicio, se le asigna una nueva ip interna virtual (IP-
 
 ![service](img/loadbalancer.png)
 
-## Creación de un recurso services
+## Creación de un recurso services del tipo ClusterIP
 
-Para crear un servicio, podemos utilizar la definción del recurso en un fichero yaml, por ejemplo tenemos el fichero [`nginx-srv.yam`](../ejemplos/nginx/nginx-srv.yaml):
+Para crear un servicio, podemos utilizar la definición del recurso en un fichero yaml, por ejemplo:
 
     apiVersion: v1
     kind: Service
@@ -62,12 +62,64 @@ Podemos ver el servicio que hemos creado:
 
 Como vemos también tenemos un servicio llamado `kubernetes` que nos ofrece acceso interno al cluster.
 
-## Acceso al servicio
+## Acceso a un servicio ClusterIP
 
 Como hemos comentado con un servicio del tipo *ClusterIP* no podemos acceder desde el exterior. Cualquier pod si podría acceder a ese servicio. 
 
-Sin embargo, puede ser bueno acceder desde exterior, por ejemplo en la fase de desarrollo de una aplicación para probarla. Para realizar el acceso vamos acrear un proxy al cluster de Kubernetes para poder acceder directamente a la API, para ello:
+Sin embargo, puede ser bueno acceder desde exterior, por ejemplo en la fase de desarrollo de una aplicación para probarla. Para realizar el acceso vamos a crear un proxy al cluster de Kubernetes para poder acceder directamente a la API, para ello:
 
     kubectl proxy
 
-http://localhost:8001/api/v1/namespaces/default/services/nginx:http/proxy/
+Y podemos acceder desde el navegador a una URL de este tipo:
+
+    http://localhost:8001/api/v1/namespaces/<NAMESPACE>/services/<SERVICE NAME>:<PORT NAME>/proxy/
+
+En nuestro caso, en el que estamos trabajando en el espacio de nombres `default`, sería:
+
+![clusterip](img/acceso_clusterip.png)
+
+## Creación de un recurso services del tipo NodePort
+
+Podríamos modificar el servicio que anteriormente hemos creado, y cambiarle el tipo, utilizando:
+
+    kubectl edit service/nginx
+
+O también podemos borrar el servicio que tenemos y crear uno nuevo indicando el tipo de servicio:
+
+    kubectl delete service nginx
+
+    kubectl expose deployment/nginx --port=80 --type=NodePort
+
+O utilizar la definición del servicio en un fichero yaml, por ejemplo tenemos el fichero [`nginx-srv.yam`](../ejemplos/nginx/nginx-srv.yaml):
+
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx
+      namespace: default
+    spec:
+      type: NodePort
+      ports:
+      - name: http
+        port: 80
+        targetPort: http
+      selector:
+        app: nginx
+
+Creamos el servicio:
+
+    kubectl create -f ../ejemplos/nginx/nginx-srv.yaml 
+    service "nginx" created
+
+Podemos ver el servicio que hemos creado:
+
+    kubectl get svc
+    NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+    kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        3d
+    nginx        NodePort    10.111.102.186   <none>        80:30305/TCP   3h
+
+## Acceso a un servicio NodePort
+
+Ahora podemos acceder a nuestra aplicación utilizando la IP del cluster de Kuberentes y el puerto que se ha asignado al servicio, en nuestro caso el 30305.
+
+![clusterip](img/acceso_nodeport.png)

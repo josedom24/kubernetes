@@ -4,7 +4,7 @@ metadata:
   name: nginx
   namespace: default
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - name: http
     port: 80
