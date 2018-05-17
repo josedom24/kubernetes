@@ -70,4 +70,4 @@ Sin embargo, puede ser bueno acceder desde exterior, por ejemplo en la fase de d
 
     kubectl proxy
 
-http://localhost:8001/api/v1/namespaces/default/services/nginx:/proxy
+http://localhost:8001/api/v1/namespaces/default/services/nginx:http/proxy/
