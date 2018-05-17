@@ -161,4 +161,4 @@ Y accedemos a la aplicación:
 
 ![guestbook](img/guestbook1.png)
 
-Como podemos ver la aplicación no funciona porque está esperando a conectarse a la base de datos, es decir, nuestra aplicación no puede conectar a la base de datos (no la encuentra). Para solucionar este problema vamos a introducir un nuevo recurso de Kubernetes: los servicios [`services`](https://kubernetes.io/docs/concepts/services-networking/service/) que permiten configurar el acceso a los pods.
+Como podemos ver la aplicación no funciona porque está esperando a conectarse a la base de datos, es decir, nuestra aplicación no puede conectar a la base de datos (no la encuentra). Para solucionar este problema vamos a introducir un nuevo recurso de Kubernetes: los servicios ([`services`](https://kubernetes.io/docs/concepts/services-networking/service/)) que permiten configurar el acceso a los pods.
