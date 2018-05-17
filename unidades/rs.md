@@ -32,7 +32,7 @@ Vamos a ver un ejemplo de definición de ReplicaSet en el fichero [`nginx-rs.yam
               name:  nginx
 
 * `replicas`: Indicamos el número de pos que siempre se van a estar ejecutando.
-* `selector`: Indicamos el pods que vamos a replicar y vamos a controlar con el ReplicaSet. En este caso va a controlar pods que tenga un *label* `app` cuyo valor sea `nginx`.
+* `selector`: Indicamos el pods que vamos a replicar y vamos a controlar con el ReplicaSet. En este caso va a controlar pods que tenga un *label* `app` cuyo valor sea `nginx`. Si no se indica el campo `selector` se seleccionar or defecto los pods cuyos labels sean iguales a los que hemos declarado en la sección siguiente.
 * `template`: El recurso `ReplicaSet` contiene la definición de un `pod`.
 
 Al crear el `ReplicaSet` se crearán los pods que hemos indicado como número de replicas:
