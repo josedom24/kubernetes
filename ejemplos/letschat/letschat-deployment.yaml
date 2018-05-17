@@ -1,0 +1,19 @@
+﻿apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: letschat
+  labels:
+    name: letschat
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        name: letschat
+    spec:
+      containers:
+      - name: letschat
+        image: sdelements/lets-chat
+        ports:
+          - name: http-server
+            containerPort: 3000

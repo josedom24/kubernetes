@@ -1,0 +1,21 @@
+﻿apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+    tier: backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+        tier: backend
+    spec:
+      containers:
+      - name: mongo
+        image: mongo
+        ports:
+          - name: mongo
+            containerPort: 27017
