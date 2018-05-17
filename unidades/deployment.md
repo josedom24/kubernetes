@@ -36,7 +36,7 @@ Vamos a ver un ejemplo de definición de un `Deployment` en el fichero [`nginx-d
             name: nginx
             ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
 
 El despliegue de un `Deployment` crea un ReplicaSet y los Pods correspondientes. Por lo tanto en la definición de un `Deployment` se define también el replicaSet asociado. En la práctica siempre vamos a trabajar con `Deployment`. Los atributos relacionados con el `Deployment` que hemos indicado en la definición son:
 
