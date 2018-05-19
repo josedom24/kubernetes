@@ -32,6 +32,12 @@ La consulta para resolver la IP de un servicio sería:
     Name:      nginx
     Address 1: 10.111.102.186 nginx.default.svc.cluster.local
 
+De esta manera podemos hacer referencia al servicio por el nombre:
+
+    kubectl exec -it busybox -- wget http://nginx
+    Connecting to nginx (10.111.102.186:80)
+    index.html           100% |*******************************|   612   0:00:00 ETA
+
 Como podemos observar el servidor DNS se llama `kube-dns.kube-system.svc.cluster.local` y tiene la IP `10.96.0.10`, es un servicio que representa un conjunto de pods que se está ejecutando en el espacio de nombres `kube-config`:
 
     kubectl get pods --namespace=kube-system -o wide
