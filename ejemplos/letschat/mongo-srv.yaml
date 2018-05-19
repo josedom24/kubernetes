@@ -9,4 +9,4 @@ spec:
     port: 27017
     targetPort: mongo
   selector:
-    app: mongo
+    name: mongo
