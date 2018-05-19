@@ -12,7 +12,7 @@ El servicio *KubeDNS* se comounica con el servidor de API y comprueba los servic
 
 ## Comprobamos el DNS
 
-Creamos un pod con la imagen [`busybox`](https://www.busybox.net/) a partir del fichero [ppbusybox.yaml`](../ejemplos/busybox/busybox.yaml):
+Creamos un pod con la imagen [`busybox`](https://www.busybox.net/) a partir del fichero [`busybox.yaml`](../ejemplos/busybox/busybox.yaml):
 
     kubectl create -f busybox.yaml
 
