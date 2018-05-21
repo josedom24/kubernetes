@@ -1,6 +1,6 @@
 # Ejemplo: Desplegando la aplicación LetsChat
 
-En este ejemplo vamos a instalar una aplicación web (CMS), llamado letscahat, que está escrito en node.js y utiliza una base de datos mongo. Por lo tanto vamos a crear dos deployments:
+En este ejemplo vamos a instalar una aplicación web (CMS), llamado [`letschat`](https://github.com/sdelements/lets-chat/wiki), que está escrito en node.js y utiliza una base de datos mongo. Por lo tanto vamos a crear dos deployments:
 
 * Uno con la aplicación letschat, este deployment lo vamos poder escalar sin problemas.
 * Otro con la base de datos mongo.
