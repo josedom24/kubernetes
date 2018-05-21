@@ -6,6 +6,9 @@ metadata:
     name: letschat
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      name: letschat
   template:
     metadata:
       labels:
@@ -16,4 +19,4 @@ spec:
         image: sdelements/lets-chat
         ports:
           - name: http-server
-            containerPort: 3000
+            containerPort: 8080
