@@ -21,7 +21,7 @@ En el directorio [`letschat`](https://github.com/josedom24/kubernetes/tree/maste
           selector:
             name: mongo
 
-* El fichero `letschat-srv.yaml` crea el servicio *NodePort* Para poder acceder desde el exterior a la aplicación:
+* El fichero `letschat-srv.yaml` crea el servicio *NodePort* para poder acceder desde el exterior a la aplicación:
 
         apiVersion: v1
         kind: Service
