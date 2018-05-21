@@ -26,7 +26,7 @@ En este caso no tenemos que acceder a la base de datos desde el exterior. Es la 
         tier: backend
       type: ClusterIP
 
-De forma similar el fichero [`redis-slave-srv.yaml`] (https://github.com/josedom24/kubernetes/blob/master/ejemplos/guestbook/parte2/redis-slave-srv.yaml) define el servicio apra acceder al *slave* de *redis*.
+De forma similar el fichero [`redis-slave-srv.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/guestbook/parte2/redis-slave-srv.yaml) define el servicio apra acceder al *slave* de *redis*.
 
 ## Definición del  servicio para poder acceder a la aplicación
 
@@ -49,3 +49,30 @@ En el fichero [`frontend-srv.yaml`](https://github.com/josedom24/kubernetes/blob
         tier: frontend
 
 ## Creando los servicios
+
+Vamos a crear primero los servicios para el acceso a la base de datos:
+
+    kubectl create -f redis-master-srv.yaml 
+    service "redis-master" created
+    
+    kubectl create -f redis-slave-srv.yaml 
+    service "redis-slave" created
+
+Y a continuación creamos el servicio para el acceso a la aplicación:
+
+    kubectl create -f frontend-srv.yaml 
+    service "frontend" created
+
+Y comprobamos que hemos creado dos servicio del tipo *ClustrIP* para el acceso a la base de datos, y uno del tipo *NodePort* para el acceso a la aplicación:
+
+    kubectl get services
+    NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+    frontend       NodePort    10.103.199.174   <none>        80:30355/TCP     15s
+    kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP          7d
+    redis-master   ClusterIP   10.108.176.214   <none>        6379/TCP         1m
+    redis-slave    ClusterIP   10.105.89.203    <none>        6379/TCP         1m
+
+Además comprobamos que nos han asignado el puerto 30355 para el acceso a la aplicación:
+
+![guestbook](img/guestbook2.png)
+
