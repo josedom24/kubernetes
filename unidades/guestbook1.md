@@ -15,6 +15,10 @@ Para empezar vamos a crear el `Deployment` de nuestra aplicación que tenemos en
         tier: frontend
     spec:
       replicas: 3
+      selector:
+        matchLabels:
+          app: guestbook
+          tier: frontend
       template:
         metadata:
           labels:
@@ -63,6 +67,11 @@ El `Deployment` del master de redis, lo encontramos en el fichero [`redis-master
         tier: backend
     spec:
       replicas: 1
+      selector:
+        matchLabels:
+          app: redis
+          role: master
+          tier: backend
       template:
         metadata:
           labels:
@@ -99,6 +108,11 @@ Y de la misma manera desplegamos el redis slave, que encontramos en el fichero [
         tier: backend
     spec:
       replicas: 3
+      selector:
+        matchLabels:
+          app: redis
+          role: slave
+          tier: backend
       template:
         metadata:
           labels:

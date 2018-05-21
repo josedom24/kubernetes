@@ -8,6 +8,11 @@ metadata:
     tier: backend
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      role: master
+      tier: backend
   template:
     metadata:
       labels:
