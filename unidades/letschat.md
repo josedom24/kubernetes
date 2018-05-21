@@ -26,14 +26,14 @@ En el directorio [`letschat`](https://github.com/josedom24/kubernetes/tree/maste
         apiVersion: v1
         kind: Service
         metadata:
-        name: letschat
+          name: letschat
         spec:
-        type: NodePort
-        ports:
-        - name: http
+          type: NodePort
+          ports:
+          - name: http
             port: 8080
             targetPort: http-server
-        selector:
+          selector:
             name: letschat
 
 Si queremos desplegar todos los ficheros que hay en el directorio lo podemos hacer de la siguiente forma:
