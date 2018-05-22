@@ -1,5 +1,7 @@
 # Kubernetes
 
+![ku](img/ku.png)
+
 Apuntes sobre k8s
 
 * [Instalación de kubernetes con kubeadm](unidades/kubeadm.md)
