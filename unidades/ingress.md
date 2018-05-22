@@ -9,7 +9,7 @@ La solución puede ser utilizar un [`Ingress controller`](https://kubernetes.io/
 
 ![ingress](img/ingress.png)
 
-* Vamos a desplegar una pod que implementa un proxy inverso (podemos utilizar varias opciones: nginx, HAproxy, traefik,...) que esperara peticiones HTTP y HTTPS.
+* Vamos a desplegar una pod que implementa un proxy inverso (podemos utilizar varias opciones: nginx, HAproxy, traefik,...) que esperará peticiones HTTP y HTTPS.
 * Por lo tanto el `Ingress Controller` será el nodo del cluster donde se ha instalado el pod. En nuestro caso, para realizar el despliegue vamos utilizar un recurso de Kubernetes llamado [`DaemontSet`](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) que asegura que el despliegue se hace en todos los nodos del cluster y que los puertos que expone los pods (80 y 443) están mapeado y son accesible en los nodos. Por lo que cada uno de los nodos del cluster va a poseer una copia del `Ingress Controller`.
 * No es necesario que al servicio al que accede el `Ingress Controller` este configurado del tipo *NodePort*.
 
