@@ -62,7 +62,7 @@ Partimos de que tenemos desplegado un servidor web nginx, como se puede observar
     pod/nginx-6f596bfb6d-49h9d         1/1       Running   0          25s
     pod/nginx-6f596bfb6d-swclf         1/1       Running   0          25s
 
-A continuación vamos a crear la definición del recurso Ingress en el fichero [`nginx-ingress.yaml`]():
+A continuación vamos a crear la definición del recurso Ingress en el fichero [`nginx-ingress.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/nginx/nginx.yaml):
 
     apiVersion: extensions/v1beta1
     kind: Ingress
