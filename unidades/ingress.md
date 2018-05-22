@@ -49,3 +49,48 @@ La IP de acceso a uno de los nodos en la 172.22.200.178, por lo que podemos hace
 
 ## Configurando el recurso Ingress
 
+Partimos de que tenemos desplegado un servidor web nginx, como se puede observar el servicio que se ha creado es de tipo *ClusterIP*:
+
+    kubectl get deploy,service,pods
+    NAME                                 DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    deployment.extensions/nginx          2         2         2            2           25s
+
+    NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+    service/nginx          ClusterIP   10.107.232.75    <none>        80/TCP           25s
+
+    NAME                               READY     STATUS    RESTARTS   AGE
+    pod/nginx-6f596bfb6d-49h9d         1/1       Running   0          25s
+    pod/nginx-6f596bfb6d-swclf         1/1       Running   0          25s
+
+A continuación vamos a crear la definición del recurso Ingress en el fichero [`nginx-ingress.yaml`]():
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+      name: nginx
+    spec:
+      rules:
+      - host: nginx.172.22.200.178.nip.io
+        http:
+          paths:
+          - path: /
+            backend:
+              serviceName: nginx
+              servicePort: 80
+
+En este caso hemos creado una regla: cuando accedemos con el nombre `nginx.172.22.200.178.nip.io` (más infomación del dominio [`nip.io`](http://nip.io/)) a la ruta `/`, accederemos al servicio llamado `nginx` en el puerto 80.
+
+    kubectl create -f nginx-ingress.yaml 
+    ingress.extensions "nginx" created
+
+    kubectl get ingress
+    NAME      HOSTS                         ADDRESS   PORTS     AGE
+    nginx     nginx.172.22.200.178.nip.io             80        10s
+
+Y accedemos desde el navegador:
+
+![ingress](img/ingress2.png)
+
+Además podemos acceder al *dashboard* de traefik en el puerto 8080, donde podemos ver de forma gráfica las distintas reglas definidas en el proxy y otras informaciones interesantes:
+
+![ingress](img/ingress3.png)
