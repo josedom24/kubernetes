@@ -1,6 +1,6 @@
 # Kubernetes
 
-![ku](img/ku.png)
+![ku](unidades/img/ku.png)
 
 Apuntes sobre k8s
 
