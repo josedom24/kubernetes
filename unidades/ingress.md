@@ -42,7 +42,7 @@ Comprobamos la creación de los pods:
 
 Como vemos se ha creado un pod en cada nodo.
 
-La IP de acceso a uno de los nodos en la 172.22.200.178, por lo que podemos hacer la prueba de que el proxy inverso está funcionando:
+La IP de acceso a uno de los nodos es la 172.22.200.178, por lo que podemos hacer la prueba de que el proxy inverso está funcionando:
 
     curl http://172.22.200.178
     404 page not found
