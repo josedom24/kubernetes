@@ -13,4 +13,4 @@ Apuntes sobre k8s
 * [El servicio DNS en Kubernetes](unidades/dns.md)
 * [Ejemplo: Desplegando la aplicación GuestBook (Parte 2)](unidades/guestbook2.md)
 * [Ejemplo: Desplegando la aplicación LetsChat](unidades/letschat.md)
-* [Recursos de Kubernetes: Ingress](ingress.md)
+* [Recursos de Kubernetes: Ingress](unidades/ingress.md)
