@@ -1,15 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: guestbook-ingress
+  name: ingress-name-based
   annotations:
-    nginx.ingress.kubernetes.io/affinity: cookie
+    traefik.ingress.kubernetes.io/affinity: "true"
 spec:
   rules:
-  - host: app.172.22.200.178.nip.io
+  - host: www.guestbook.com
     http:
       paths:
       - path: "/"
         backend:
           serviceName: frontend
           servicePort: 80
+  - host: www.letschat.com
+    http:
+      paths:
+      - path: "/"
+        backend:
+          serviceName: letschat
+          servicePort: 8080

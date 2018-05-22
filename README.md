@@ -1,4 +1,4 @@
-# kubernetes
+# Kubernetes
 
 Apuntes sobre k8s
 
@@ -14,3 +14,4 @@ Apuntes sobre k8s
 * [Ejemplo: Desplegando la aplicación GuestBook (Parte 2)](unidades/guestbook2.md)
 * [Ejemplo: Desplegando la aplicación LetsChat](unidades/letschat.md)
 * [Recursos de Kubernetes: Ingress](unidades/ingress.md)
+* [Ejemplo: Accediendo a nuestras aplicaciones con Ingress](unidades/ingress2.md)
