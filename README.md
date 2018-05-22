@@ -1,8 +1,4 @@
-# Kubernetes
-
 ![ku](unidades/img/ku.png)
-
-Apuntes sobre k8s
 
 * [Instalación de kubernetes con kubeadm](unidades/kubeadm.md)
 * [Desplegando una aplicación en Kubernetes](unidades/deploy.md)
