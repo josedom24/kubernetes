@@ -55,7 +55,7 @@ Creamos el recurso ingress:
     NAME                 HOSTS                                ADDRESS   PORTS     AGE
     ingress-name-based   www.guestbook.com,www.letschat.com             80        15s
 
-Vamos a utilizar resolución estática, por lo tanto añado la siguiente línea al fichero `/etc/hosts`:
+Vamos a utilizar resolución estática, por lo tanto añado la resolución a la IP de cualquier nodo del cluster al fichero `/etc/hosts`:
 
     172.22.200.178  www.guestbook.com  www.letschat.com
 
