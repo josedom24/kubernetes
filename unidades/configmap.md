@@ -83,7 +83,7 @@ Ahora podemos configurar el fichero yaml que define el despliegue, [`mariadb-dep
 
 Creamos el despliegue y probamos el acceso:
 
-    kubectl create -f mariadb-deployment-configmap.conf 
+    kubectl create -f mariadb-deployment-configmap.yaml
     deployment.apps "mariadb-deploy-cm" created
     
     kubectl get pods -l app=mariadb

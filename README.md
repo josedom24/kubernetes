@@ -16,4 +16,5 @@
 * [Recursos de Kubernetes: Namespaces](unidades/namespaces.md)
 * [Configurando nuestras aplicaciones con variables de entorno](unidades/configapp.md)
 * [Configurando nuestras aplicaciones: ConfigMaps](unidades/configmap.md)
+* [Configurando nuestras aplicaciones: Secrets](unidades/secrets.md)
 * [Ejemplo: Desplegando WordPress con MariaDB](uniaddes/wp.md)

@@ -31,7 +31,7 @@ Podemos definir un `Deployment` que defina un contenedor configurado por medio d
 
 Y creamos el despliegue:
 
-    kubectl create -f mariadb-deployment.conf 
+    kubectl create -f mariadb-deployment.yaml
     deployment.apps "mariadb-deployment" created
 
 O directamente ejecutando:
