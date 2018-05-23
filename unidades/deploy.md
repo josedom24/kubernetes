@@ -34,4 +34,4 @@ Los distintos recursos de Kubernetes nos proporcionan distintas características
   * Control de acceso basada en Roles
   * Integración y despliegue continuo
 
-En los siguientes apartados vamos a estudiando cada uno de estos recursos.
+En los siguientes apartados vamos a ir estudiando cada uno de estos recursos.
