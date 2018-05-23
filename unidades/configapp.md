@@ -2,7 +2,7 @@
 
 Para configurar las aplicaciones que vamos a desplegar usamos variables de entorno, por ejemplo podemos ver las variables de entorno que podemos definir para configurar la imagen docker de [MariaDB](https://hub.docker.com/_/mariadb/).
 
-Podemos definir un `Deployment` que defina un contenedor configurado por medio de variables de entorno, [`mariadb-deployment.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/mariadb/mariadb-deployment.conf):
+Podemos definir un `Deployment` que defina un contenedor configurado por medio de variables de entorno, [`mariadb-deployment.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/mariadb/mariadb-deployment.yaml):
 
     apiVersion: apps/v1beta1
     kind: Deployment
