@@ -93,3 +93,5 @@ Creamos el despliegue y probamos el acceso:
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
     MariaDB [(none)]> 
+
+La empresa [Bitnami](https://bitnami.com/) ha desarrollado otro recurso de Kubernete llamado [`SlealedSecrets`](https://github.com/bitnami-labs/sealed-secrets) que permite que un controlador gestione la encriptación de los datos sensibles.
