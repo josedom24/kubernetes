@@ -7,7 +7,6 @@ Partimos del escenario donde tenemos desplegado nuestras dos aplicaciones con la
     deployment.extensions/guestbook      3         3         3            3           1d
     deployment.extensions/letschat       3         3         3            3           1d
     deployment.extensions/mongo          1         1         1            1           1d
-    deployment.extensions/nginx          4         4         4            4           21h
     deployment.extensions/redis-master   1         1         1            1           1d
     deployment.extensions/redis-slave    3         3         3            3           1d
 
@@ -16,7 +15,6 @@ Partimos del escenario donde tenemos desplegado nuestras dos aplicaciones con la
     service/kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP          1d
     service/letschat       ClusterIP   10.111.18.129    <none>        8080/TCP         1d
     service/mongo          ClusterIP   10.104.219.60    <none>        27017/TCP        1d
-    service/nginx          ClusterIP   10.107.232.75    <none>        80/TCP           21h
     service/redis-master   ClusterIP   10.98.46.85      <none>        6379/TCP         1d
     service/redis-slave    ClusterIP   10.110.200.207   <none>        6379/TCP         1d
 
