@@ -94,4 +94,4 @@ Creamos el despliegue y probamos el acceso:
 
     MariaDB [(none)]> 
 
-La empresa [Bitnami](https://bitnami.com/) ha desarrollado otro recurso de Kubernete llamado [`SlealedSecrets`](https://github.com/bitnami-labs/sealed-secrets) que permite que un controlador gestione la encriptación de los datos sensibles.
+La empresa [Bitnami](https://bitnami.com/) ha desarrollado otro recurso de Kubernete llamado [`SealedSecrets`](https://github.com/bitnami-labs/sealed-secrets) que permite que un controlador gestione la encriptación de los datos sensibles.
