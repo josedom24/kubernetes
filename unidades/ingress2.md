@@ -57,7 +57,7 @@ Creamos el recurso ingress:
     NAME                 HOSTS                                ADDRESS   PORTS     AGE
     ingress-name-based   www.guestbook.com,www.letschat.com             80        15s
 
-Vamos a utilizar resolución estática, por lo tento añado la siguiente línea al fichero `/etc/hosts`:    
+Vamos a utilizar resolución estática, por lo tanto añado la siguiente línea al fichero `/etc/hosts`:
 
     172.22.200.178  www.guestbook.com  www.letschat.com
 
@@ -67,4 +67,8 @@ Y ya podemos acceder:
 
 ![ingress](img/ingress-letschat.png)
 
+## Para seguir investigando
 
+* Las distintas aplicaciones que podemos usar para crear un `Ingress Controller` ([HAproxy](https://www.haproxy.com/blog/haproxy_ingress_controller_for_kubernetes/), [nginx](https://www.nginx.com/products/nginx/kubernetes-ingress-controller/), [traefik](https://docs.traefik.io/user-guide/kubernetes/),...) nos dan diferentes opciones de configuración.
+* Traefik también ofrece la posibilidad de usar [rutas basadas en path](https://docs.traefik.io/user-guide/kubernetes/#path-based-routing), trabajar con [certificados TLS](https://docs.traefik.io/user-guide/kubernetes/#add-a-tls-certificate-to-the-ingress), [autentificación básica](https://docs.traefik.io/user-guide/kubernetes/#basic-authentication), ...
+* Otra opción para acceder al `Ingress controller` es desplegarlo con un `Deployment` y crear un servicio del tipo *LoadBalancer* para acceder a él, en este caso es muy fácil escalarlo.
