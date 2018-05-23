@@ -14,5 +14,6 @@
 * [Recursos de Kubernetes: Ingress](unidades/ingress.md)
 * [Ejemplo: Accediendo a nuestras aplicaciones con Ingress](unidades/ingress2.md)
 * [Recursos de Kubernetes: Namespaces](unidades/namespaces.md)
-* [Configurando nuestras aplicaciones: ConfigMaps y Secrets](unidades/configapp.md)
+* [Configurando nuestras aplicaciones con variables de entorno](unidades/configapp.md)
+* [Configurando nuestras aplicaciones: ConfigMaps](unidades/configmap.md)
 * [Ejemplo: Desplegando WordPress con MariaDB](uniaddes/wp.md)
