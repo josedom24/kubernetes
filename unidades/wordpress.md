@@ -91,3 +91,5 @@ En realidad no son problemas, son la consecuencia de que los **pods son efimeros
 2. ¿Qué pasa si escalamos el despliegue de la base de datos y tenemos dos pods ofreciendo la base de datos?. En cada acceso a la aplicación se va a balancear la consulta a la base de datos entre los dos pods (**uno que tiene la información de la instalación y otro que que no tiene información**), por lo que en los accesos consecutivos nos va a ir mostrando la aplicación y en el siguiente acceso nos va a decir que hay que instalar el wordpress.
 3. Si escribimos un post en el wordpress y subimos una imagen, ese fichero se va a guardar en el pod que está corriendo la aplicación, por lo tanto si se borra, **se perderá el contenido estático**.
 4. En el caso que tengamos un pods con contenido estático (por ejemplo imágenes) y escalamos el despliegue de wordpress a dos pods, **en uno se encontrará la imagen pero en el otro no**, por lo tanto en los distintos accesos consecutivos que se hagan a la aplicación se ira mostrando o no la imagen según el pod que este respondiendo.
+
+Para solucionar estos problemas veremos en los siguientes apartados la utilización de volúmenes en Kubernetes.
