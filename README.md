@@ -19,3 +19,5 @@
 * [Configurando nuestras aplicaciones: Secrets](unidades/secrets.md)
 * [Ejemplo: Desplegando WordPress con MariaDB](unidades/wordpress.md)
 * [Almacenamiento en Kubernetes](unidades/volumen.md)
+* [Solicitud de almacenamiento en Kubernetes: PersistentVolumenCliams](unidades/pvc.md)
+* [Almacenamiento disponible en Kubernetes: PersistentVolumen](unidades/pv.md)
