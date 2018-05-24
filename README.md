@@ -17,4 +17,4 @@
 * [Configurando nuestras aplicaciones con variables de entorno](unidades/configapp.md)
 * [Configurando nuestras aplicaciones: ConfigMaps](unidades/configmap.md)
 * [Configurando nuestras aplicaciones: Secrets](unidades/secrets.md)
-* [Ejemplo: Desplegando WordPress con MariaDB](uniaddes/wordpress.md)
+* [Ejemplo: Desplegando WordPress con MariaDB](unidades/wordpress.md)
