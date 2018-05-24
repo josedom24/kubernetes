@@ -82,3 +82,12 @@ Por último creamos el recurso `ingress` que nos va a permitir el acceso a la ap
 Y accedemos:
 
 ![wp](img/wp1.png)
+
+## Problemas que nos encontramos
+
+En realidad no son problemas, son la consecuencia de que los **pods son efimeros**, cuando se elimina un pod su información se pierde. Por lo tanto nos podemos encontrar con algunas circunstancias:
+
+1. ¿Qué pasa si eliminamos el despliegue de mariadb?, o, ¿se elimina el pod de mariadb y se crea uno nuevo?. En estas circunstancias **se pierde la información de la base de datos** y el proceso de instalación comenzará de nuevo.
+2. ¿Qué pasa si escalamos el despliegue de la base de datos y tenemos dos pods ofreciendo la base de datos?. En cada acceso a la aplicación se va a balancear la consulta a la base de datos entre los dos pods (**uno que tiene la información de la instalación y otro que que no tiene información**), por lo que en los accesos consecutivos nos va a ir mostrando la aplicación y en el siguiente acceso nos va a decir que hay que instalar el wordpress.
+3. Si escribimos un post en el wordpress y subimos una imagen, ese fichero se va a guardar en el pod que está corriendo la aplicación, por lo tanto si se borra, **se perderá el contenido estático**.
+4. En el caso que tengamos un pods con contenido estático (por ejemplo imágenes) y escalamos el despliegue de wordpress a dos pods, **en uno se encontrará la imagen pero en el otro no**, por lo tanto en los distintos accesos consecutivos que se hagan a la aplicación se ira mostrando o no la imagen según el pod que este respondiendo.
