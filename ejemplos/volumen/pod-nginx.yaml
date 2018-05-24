@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: www
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - mountPath: /home
+      name: home
+    - mountPath: /git
+      name: git
+      readOnly: true
+    - mountPath: /temp
+      name: temp
+  volumes:
+  - name: home
+    hostPath:
+      path: /home/debian
+  - name: git
+    gitRepo:
+      repository: https://github.com/josedom24/kubernetes.git
+  - name: temp
+    emptyDir: {}
+      

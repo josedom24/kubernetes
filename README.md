@@ -18,3 +18,4 @@
 * [Configurando nuestras aplicaciones: ConfigMaps](unidades/configmap.md)
 * [Configurando nuestras aplicaciones: Secrets](unidades/secrets.md)
 * [Ejemplo: Desplegando WordPress con MariaDB](unidades/wordpress.md)
+* [Volúmenes en Kubernetes](unidades/volumen.md)
