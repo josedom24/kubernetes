@@ -1,8 +1,43 @@
-# Ejemplo: Desplegando WordPress con MariaDB
+# Ejemplo: Desplegando WordPress con MariaDB con almacenamiento persistente
 
-Puedes encontrar todos los ficheros con los que vamos a trabajar en el directorio [`wordpress`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress).
 
-Vamos a trabajar en un `namespace` lamado *wordpress*:
+kubectl create -f wordpress-pv.yaml
+persistentvolume "wordpress-pv" created
+ jose@pandora  ~/github/kubernetes/ejemplos/wordpress2   master ●  kubectl create -f mariadb-pv.yaml  
+persistentvolume "mariadb-pv" created
+
+
+
+
+
+
+Puedes encontrar todos los ficheros con los que vamos a trabajar en el directorio [`wordpress2`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress2).
+
+## Definiendo el almacenamiento
+
+Creamos dos *pv* para la base de datos y la aplicación:
+
+En el fichero `mariadb-pv.yaml`:
+
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: mariadb-pvc
+      namespace: wordpress
+      labels:
+        app: wordpress
+        type: database
+    spec:
+      capacity:
+        storage: 5Gi
+      accessModes:
+        - ReadWriteMany
+      persistentVolumeReclaimPolicy: Recycle
+      nfs:
+        path: /var/shared
+        server: 10.0.0.4
+
+Vamos a trabajar en un `namespace` llamado *wordpress*:
 
     kubectl create -f wordpress-ns.yaml 
     namespace "wordpress" created
