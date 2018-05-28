@@ -74,3 +74,20 @@ Evidentemente al montar el directorio *DocumentRoot* del servidor (`/usr/share/n
 
 ![nginx](img/nginx-pvc2.png)
 
+Si escalamos el pod no tendríamos ningún problema ya que todos los nodos del cluster comparten el mismo directorio referenciado por el volumen. Además el contenido del volumen es persistente, y aunque eliminemos el pd, la información no se pierde:
+
+    kubectl delete pod www-vol
+    pod "www-vol" deleted
+
+    kubectl create -f pod-nginx-pvc.yaml
+    pod "www-vol" created
+    
+    kubectl port-forward www-vol 8080:80
+    Frwarding from 127.0.0.1:8080 -> 80
+    Forwarding from [::1]:8080 -> 80
+
+Y desde otro terminal:
+
+    curl http://localhost:8080
+    It works...
+
