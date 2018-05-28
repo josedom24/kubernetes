@@ -74,7 +74,7 @@ Evidentemente al montar el directorio *DocumentRoot* del servidor (`/usr/share/n
 
 ![nginx](img/nginx-pvc2.png)
 
-Si escalamos el pod no tendríamos ningún problema ya que todos los nodos del cluster comparten el mismo directorio referenciado por el volumen. Además el contenido del volumen es persistente, y aunque eliminemos el pd, la información no se pierde:
+Si escalamos el pod no tendríamos ningún problema ya que todos los nodos del cluster comparten el mismo directorio referenciado por el volumen. Además el contenido del volumen es persistente, y aunque eliminemos el pod, la información no se pierde:
 
     kubectl delete pod www-vol
     pod "www-vol" deleted
