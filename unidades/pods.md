@@ -14,7 +14,7 @@ Por lo tanto parece razonable que podamos tener más de un contenedor compartien
 * Kubernetes puede trabajar con distintos contenedores (Docker, Rocket, cri-o,...) por lo tanto es necesario añadir una capa de abstracción que maneje las distintas clase de contenedores.
 * Además esta capa de abstracción añade información adicional necesaria en Kubernetes como por ejemplo, políticas de reinicio, comprobación de que la aplicación esté inicializada (readiness probe), comprobación de que la aplicación haya realizado alguna acción especificada (liveness probe), ...
 
-## Ejemplos de implementación en pods
+*Ejemplos de implementación en pods*
 
 1. Un servidor web nginx con un servidor de aplicaciones PHP-FPM, lo podemos implementar en un pod, y cada servicio en un contenedor. 
 2. Una aplicación Wordpress con una base de datos mariadb, lo implementamos en dos pods diferenciados, uno para cada servicio.
