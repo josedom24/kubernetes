@@ -1,51 +1,50 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: mariadb-deployment
+  name: wordpress-deployment
   namespace: wordpress
   labels:
     app: wordpress
-    type: database
+    type: frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: wordpress
-        type: database
+        type: frontend
     spec:
       containers:
         - name: wordpress
-          image: mariadb
+          image: wordpress
           ports:
-            - containerPort: 3306
-              name: db-port
+            - containerPort: 80
+              name: http-port
+            - containerPort: 443
+              name: https-port
           env:
-            - name: MYSQL_USER
+            - name: WORDPRESS_DB_HOST
+              value: mariadb-service
+            - name: WORDPRESS_DB_USER
               valueFrom:
                 secretKeyRef:
                   name: mariadb-secret
                   key: dbuser
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-secret
-                  key: dbname
-            - name: MYSQL_PASSWORD
+            - name: WORDPRESS_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mariadb-secret
                   key: dbpassword
-            - name: MYSQL_ROOT_PASSWORD
+            - name: WORDPRESS_DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: mariadb-secret
-                  key: dbrootpassword
+                  key: dbname
           volumeMounts:
-            - name: mariadb-vol
-              mountPath: /var/lib/mysql
+            - name: wordpress-vol
+              mountPath: /var/www/html
       volumes:
-        - name: mariadb-vol
+        - name: wordpress-vol
           persistentVolumeClaim:
-            claimName: mariadb-pvc
-          
+            claimName: wordpress-pvc
+            

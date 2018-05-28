@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Recycle
   nfs:
-    path: /var/shared
+    path: /var/shared/vol1
     server: 10.0.0.4
 ---
 apiVersion: v1
@@ -23,5 +23,5 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Recycle
   nfs:
-    path: /var/shared
+    path: /var/shared/vol2
     server: 10.0.0.4

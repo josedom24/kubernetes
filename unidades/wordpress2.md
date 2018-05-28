@@ -1,10 +1,125 @@
 # Ejemplo: Desplegando WordPress con MariaDB con almacenamiento persistente
 
+Puedes encontrar todos los ficheros con los que vamos a trabajar en el directorio [`wordpress2`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress2).
 
-kubectl create -f wordpress-pv.yaml
-persistentvolume "wordpress-pv" created
- jose@pandora  ~/github/kubernetes/ejemplos/wordpress2   master ●  kubectl create -f mariadb-pv.yaml  
-persistentvolume "mariadb-pv" created
+## Configuración del servidor NFS
+
+Para este ejercicio hemos creado dos directorio que hemos exportado en el servidor NFS, en el fichero `/etc/exports` encontramos:
+
+    /var/shared/vol1 10.0.0.0/24(rw,sync,no_root_squash,no_all_squash)
+    /var/shared/vol2 10.0.0.0/24(rw,sync,no_root_squash,no_all_squash)
+
+Y en los clientes montamos dichos directorios:
+
+    mount -t nfs4 10.0.0.4:/var/shared/vol1 /var/data/vol1
+    mount -t nfs4 10.0.0.4:/var/shared/vol2 /var/data/vol2
+
+## Gestión del almacenamiento para nuestro despliegue
+
+Lo primero que hacemos es crear los dos *pv* que podemos encontrar definidos en el fichero [`wordpress-pv.yaml`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress2/wordpress-pv.yaml):
+
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: volumen1
+    spec:
+      capacity:
+        storage: 5Gi
+      accessModes:
+        - ReadWriteMany
+      persistentVolumeReclaimPolicy: Recycle
+      nfs:
+        path: /var/shared/vol1
+        server: 10.0.0.4
+    ---
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: volumen2
+    spec:
+      capacity:
+        storage: 5Gi
+      accessModes:
+        - ReadWriteMany
+      persistentVolumeReclaimPolicy: Recycle
+      nfs:
+        path: /var/shared/vol2
+        server: 10.0.0.4
+
+Lo creamos:
+
+    kubectl create -f wordpress-pv.yaml
+    persistentvolume "volumen1" created
+    persistentvolume "volumen2" created
+
+A continuación vamos a trabajar con un *namespace*, por lo tanto lo creamos:
+
+    kubectl create -f wordpress-ns.yaml 
+    namespace "wordpress" created
+
+Vamos arealizar la solicitud de almacenamiento para la base de datos, que tenemos definido en el fichero [`mariadb-pvc.yaml`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress2/mariadb-pvc.yaml):
+
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: mariadb-pvc
+      namespace: wordpress
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 5Gi
+
+De forma similar solicitamos el almacenamiento para nuestra aplicación. Esta solicitud la tenemos definida en el fichero [`wordpress-pvc.yaml`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress2/wordpress-pvc.yaml).
+
+Creamos las solicitudes:
+
+    kubectl create -f wordpress-pvc.yaml 
+    persistentvolumeclaim "wordpress-pvc" created
+    
+    kubectl create -f mariadb-pvc.yaml  
+    persistentvolumeclaim "mariadb-pvc" created
+
+Y lo comprobamos:
+
+    kubectl get pv,pvc -n wordpress     
+    NAME                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                     STORAGECLASS   REASON    AGE
+    persistentvolume/volumen1   5Gi        RWX            Recycle          Bound     wordpress/wordpress-pvc                            50s
+    persistentvolume/volumen2   5Gi        RWX            Recycle          Bound     wordpress/mariadb-pvc                              49s
+
+    NAME                                  STATUS    VOLUME     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    persistentvolumeclaim/mariadb-pvc     Bound     volumen2   5Gi        RWX                           10s
+    persistentvolumeclaim/wordpress-pvc   Bound     volumen1   5Gi        RWX                           23s
+
+
+
+
+kubectl create -f mariadb-srv.yaml 
+service "mariadb-service" created
+
+
+kubectl create -f wordpress-srv.yaml 
+service "wordpress-service" created
+
+kubectl create -f wordpress-ingress.yaml 
+ingress.extensions "wordpress-ingress" created
+
+
+kubectl create -f mariadb-secret.yaml 
+secret "mariadb-secret" created
+
+
+kubectl create -f mariadb-deployment.yaml                      
+deployment.apps "mariadb-deployment" created
+
+kubectl create -f wordpress-deployment.yaml                        
+deployment.apps "wordpress-deployment" created
+
+kubectl get deploy -n wordpress            
+NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+mariadb-deployment     1         1         1            0           0s
+wordpress-deployment   1         1         1            0           <invalid>
 
 
 
