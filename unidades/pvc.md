@@ -66,7 +66,7 @@ Lo creamos y accedemos a él:
 
 ![nginx](img/nginx-pvc.png)
 
-Evidentemente al montar el directorio *DocumentRoot* del servidor (`/usr/share/nginx/html`) en el volumen NFS no tiene `index.html`, podemos crear uno en el directorio compartido del master y estará disponible en todos los nodos:
+Evidentemente al montar el directorio *DocumentRoot* del servidor (`/usr/share/nginx/html`) en el volumen NFS, no tiene `index.html`, podemos crear uno en el directorio compartido del master y estará disponible en todos los nodos:
 
     echo "It works..." | ssh debian@172.22.201.15 'cat >> /var/shared/index.html'
  

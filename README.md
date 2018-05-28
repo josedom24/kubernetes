@@ -21,3 +21,4 @@
 * [Almacenamiento en Kubernetes](unidades/volumen.md)
 * [Almacenamiento disponible en Kubernetes: PersistentVolumen](unidades/pv.md)
 * [Solicitud de almacenamiento en Kubernetes: PersistentVolumenClaims](unidades/pvc.md)
+* [Ejemplo: Desplegando WordPress con MariaDB con almacenamiento persistente](unidades/wordpress2.md)
