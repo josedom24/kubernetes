@@ -93,3 +93,11 @@ Y desde otro terminal:
     curl http://localhost:8080
     It works...
 
+Además podemos comprobar cómo se ha montado el volumen en el contenedor:
+
+    kubectl exec -it www-vol -- bash
+
+    root@www-vol:/# df -h
+    ...
+    10.0.0.4:/var/shared   20G  4.8G   15G  26% /usr/share/nginx/html
+    ...

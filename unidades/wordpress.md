@@ -2,7 +2,7 @@
 
 Puedes encontrar todos los ficheros con los que vamos a trabajar en el directorio [`wordpress`](https://github.com/josedom24/kubernetes/tree/master/ejemplos/wordpress).
 
-Vamos a trabajar en un `namespace` lamado *wordpress*:
+Vamos a trabajar en un `namespace` llamado *wordpress*:
 
     kubectl create -f wordpress-ns.yaml 
     namespace "wordpress" created
