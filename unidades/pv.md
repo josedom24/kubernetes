@@ -91,3 +91,4 @@ Y lo creamos y vemos el recurso:
     NAME      CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
     nfs-pv    5Gi        RWX            Recycle          Available                                      10s
 
+El tipo de volumen disponible lo vamos a referenciar cin su nombre (`nfs-pv`), tiene 5Gb de capacidad, estamos utilizando NFS, el modo de acceso es RWX y su política de reciclaje es de reutilización del contenido.
