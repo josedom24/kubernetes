@@ -1,4 +1,4 @@
-# Solicitud de almacenamiento en Kubernetes: PersistentVolumenCliams
+# Solicitud de almacenamiento en Kubernetes: PersistentVolumenClaims
 
 A continuación si nuestro pod necesita un volumen, necesitamos hacer una solicitud de almacenamiento usando un obketo del tipo *PersistentVolumenCliams*.
 
