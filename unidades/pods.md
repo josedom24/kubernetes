@@ -1,6 +1,6 @@
 # Recursos de Kubernetes: Pods
 
-La unidad más pequeña de kubernetes son los [`Pods`](https://kubernetes.io/docs/concepts/workloads/pods/pod/), con los que podemos correr contenedores. Un **pod** representa un conjunto de contenedores que comparten almacenamiento y una única IP. **Los pod son efímeros**, cuando se destruyen se pierde toda la información que contenía. Si queremos desarrollar aplicaciones persistentes tenemos que utilizar volúmenes.
+La unidad más pequeña de kubernetes son los [`Pods`](https://kubernetes.io/docs/concepts/workloads/pods/pod/), con los que podemos correr contenedores. Un **pod** representa un conjunto de contenedores que comparten almacenamiento y una única IP. **Los pods son efímeros**, cuando se destruyen se pierde toda la información que contenía. Si queremos desarrollar aplicaciones persistentes tenemos que utilizar volúmenes.
 
 ![pod](img/pod.png)
 
