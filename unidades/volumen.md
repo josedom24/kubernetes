@@ -83,7 +83,7 @@ Accedemos al pod y vemos los contenidos de cada directorio:
 
 ## Compartiendo información en un pod
 
-Veamos con un ejemplo la posibilidad de compartir información entre contenedores de un pod. En el fichero [`pod2-nginx.yaml`]() creamos un pod con dos contenedores y un volumen:
+Veamos con un ejemplo la posibilidad de compartir información entre contenedores de un pod. En el fichero [`pod2-nginx.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/volumen/pod2-nginx.yaml) creamos un pod con dos contenedores y un volumen:
 
     apiVersion: v1
     kind: Pod

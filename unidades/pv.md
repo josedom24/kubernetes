@@ -30,11 +30,11 @@ Vamos a instalar en el master del cluster (lo podríamos tener en cualquier otro
 En el master como root, ejecutamos:
 
     apt install nfs-kernel-server
-    mkdir -p /shared/kubernetes/www
+    mkdir -p /var/shared
 
 Y en el fichero `/etc/export` declaramos el directorio que vamos a exportar:
 
-    /shared 10.0.0.0/24(rw,sync,no_root_squash,no_all_squash)
+    /var/shared 10.0.0.0/24(rw,sync,no_root_squash,no_all_squash)
 
 >Nota: La red 10.0.0.0/24 es la red interna donde se encuentra el master y los nodos del cluster.
 
@@ -46,7 +46,7 @@ Y comprobamos los directorios exportados:
 
     showmount -e 127.0.0.1
     Export list for 127.0.0.1:
-    /shared 10.0.0.0/24
+    /var/shared 10.0.0.0/24
 
 ### Configuración en los nodos
 
@@ -58,8 +58,36 @@ Y comprobamos los directorios exportados en el master:
 
     showmount -e 10.0.0.4
     Export list for 10.0.0.4:
-    /shared 10.0.0.0/24
+    /var/shared 10.0.0.0/24
 
 Y ya podemos montarlo:
 
-    mount -t nfs4 10.0.0.4:/shared /data
+    mount -t nfs4 10.0.0.4:/var/shared /var/data
+
+### Creación del volumen en Kubernetes
+
+Ya podemos crear el volumen utilizando el objeto *PersistentVolumen*. Lo definimos en el fichero [`nfs-pv.yaml`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/volumen/nfs-pv.yaml):
+
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: nfs-pv
+    spec:
+      capacity:
+        storage: 5Gi
+      accessModes:
+        - ReadWriteMany
+      persistentVolumeReclaimPolicy: Recycle
+      nfs:
+        path: /var/shared
+        server: 10.0.0.4
+
+Y lo creamos y vemos el recurso:
+
+    kubectl create -f nfs-pv.yaml 
+    persistentvolume "nfs-pv" created
+    
+    kubectl get pv
+    NAME      CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
+    nfs-pv    5Gi        RWX            Recycle          Available                                      10s
+
