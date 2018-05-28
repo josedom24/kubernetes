@@ -34,7 +34,9 @@ Creamos el recurso y obtenemos los recursos que tenemos a nuestra disposición:
     NAME                            STATUS    VOLUME    CAPACITY   ACCESS MODES   STORAGECLASS   AGE
     persistentvolumeclaim/nfs-pvc   Bound     nfs-pv    5Gi        RWX                           15s
 
-Si queremos añadir un volumen a un pod a perir de esta solicitud, podemos usar la definición del fichero [`pod-nginx-pvc`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/volumen/pod-nginx-pvc.yaml):
+Como podemos observar al crear el *pvc* se busca del conjunto de *pv* uno que cumpla sus requerimientos, y se asocian (*status bound*) por lo tanto el tamaño indicado en el *pvc* es el valor mínimo de tamaño que se necesita, pero el tamaño real será el mismo que el del *pv* asociado.
+
+Si queremos añadir un volumen a un pod a partir de esta solicitud, podemos usar la definición del fichero [`pod-nginx-pvc`](https://github.com/josedom24/kubernetes/blob/master/ejemplos/volumen/pod-nginx-pvc.yaml):
 
     apiVersion: v1
     kind: Pod
