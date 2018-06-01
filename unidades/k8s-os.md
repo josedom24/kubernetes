@@ -37,8 +37,8 @@ En mi caso el acceso a OpenStack se hace de forma cifrada (con https) por lo que
 
 ## Configurando kube-controller-manager
 
-Tenemos que modificar la configuración del pod *kube-controller-manager* indicado el proveedor cloud que vamos autilzar y el fichero de configuración que debe utilizar (`cloud.conf`). Además debemos asegurarnos que el pod tiene acceso al fichero de configuración `cloud.conf` y al certificado de la CA. 
-Para realizar la configuración debemos modificar el fichero `/etc/kubernetes/manifests/kube-controller-manager.yaml` de la siguiente forma:
+Tenemos que modificar la configuración del pod `kube-controller-manager` indicado el proveedor cloud que vamos autilzar y el fichero de configuración que debe utilizar (`cloud.conf`). Además debemos asegurarnos que el pod tiene acceso al fichero de configuración `cloud.conf` y al certificado de la CA. 
+Para realizar la configuración debemos modificar el fichero `/etc/kubernetes/manifests/kube-controller-manager.yaml` en el nodo master de la siguiente forma:
 
 <pre>
 ... 
@@ -70,4 +70,12 @@ volumes:
       type: FileOrCreate
     name: cloud-ca</strong>
 </pre>
+
+Una vez modificado correctamente el fichero, el pod `kube-controller-manager` se reiniciará con la nueva configuración, podemos comprobar que la modificación ha sido realizada con la siguiente instrucción:
+
+    kubectl describe pod kube-controller-manager -n kube-system | grep '/etc/kubernetes/cloud.conf'
+
+    - cloud-config=/etc/kubernetes/cloud.conf
+    /etc/kubernetes/cloud.conf from cloud-config (ro)
+    Path: /etc/kubernetes/cloud.conf
 
