@@ -13,5 +13,40 @@ En esta unidad vamos a configurar el *Kube Controller Manager* para comunicarse 
 
 Vamos a partir de una instalación de kubernetes con kubeadm (puedes seguir el apartado [Instalación de kubernetes con kubeadm](kubeadm.md)).
 
-> Si necesitas resinstalar tu instalación con kubeadm puedes ejecutar `kubeadm reset` en todos los nodos del cluster.
+> Si necesitas reinstalar kubeadm debes ejecutar `kubeadm reset` en todos los nodos del cluster.
 
+## Configuración del acceso a OpenStack
+
+Lo primero, vamos a crear un fichero `cloud.conf` donde vamos a guardar las credenciales de acceso a OpenStack y los recursos que vamos a utilizar:
+
+    [Global]
+    auth-url=https://<openstack_endpoint>:5000/v3
+    domain-name=Nombre del dominio
+    tenant-name=Nombre del proyecto
+    username=usuario
+    password=contraseña
+    ca-file=/etc/kubernetes/ca.crt
+
+    [LoadBalancer]
+    subnet-id=bf7be908-51a4-45d1-8403-391cfe1a73aa
+    floating-network-id=49812d85-8e7a-4c31-baa2-d427692f6568
+
+Se pueden configurar más opciones que puedes encontrar en este [enlace](https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/#cloud-conf).
+
+En mi caso el acceso a OpenStack se hace de forma cifrada (con https) por lo que necesito el certificado de la Autoridad Certificadora. Los ficheros `cloud.conf` y `ca.crt` los guardo en el directorio `/etc/kubernetes` del master y los nodos del cluster.
+
+## Configurando kube-controller-manager
+
+Tenemos que modificar la configuración del pod *kube-controller-manager* indicado el proveedor cloud que vamos autilzar y el fichero de configuración que debe utilizar (`cloud.conf`). Además debemos asegurarnos que el pod tiene acceso al fichero de configuración `cloud.conf` y al certificado de la CA. 
+Para realizar la configuración debemos modificar el fichero `/etc/kubernetes/manifests/kube-controller-manager.yaml` de la siguiente forma:
+
+<pre>
+... 
+spec:
+  containers:
+  - command:
+    - kube-controller-manager
+    ...
+    <strong>- --cloud-provider=openstack</strong>
+    <strong>- --cloud-config=/etc/kubernetes/cloud.conf</strong>
+</pre>
