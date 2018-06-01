@@ -49,4 +49,25 @@ spec:
     ...
     <strong>- --cloud-provider=openstack</strong>
     <strong>- --cloud-config=/etc/kubernetes/cloud.conf</strong>
+...
+    volumeMounts:
+    ...
+    <strong>- mountPath: /etc/kubernetes/cloud.conf
+      name: cloud-config
+      readOnly: true 
+    - mountPath: /etc/kubernetes/ca.crt
+      name: cloud-ca
+      readOnly: true</strong>
+...
+volumes:
+  ...
+  <strong>- hostPath:
+      path: /etc/kubernetes/cloud.conf
+      type: FileOrCreate
+    name: cloud-config
+  - hostPath:
+      path: /etc/kubernetes/ca.crt
+      type: FileOrCreate
+    name: cloud-ca</strong>
 </pre>
+
