@@ -37,7 +37,7 @@ En mi caso el acceso a OpenStack se hace de forma cifrada (con https) por lo que
 
 ## Configurando kube-controller-manager
 
-Tenemos que modificar la configuración del pod `kube-controller-manager` indicado el proveedor cloud que vamos autilzar y el fichero de configuración que debe utilizar (`cloud.conf`). Además debemos asegurarnos que el pod tiene acceso al fichero de configuración `cloud.conf` y al certificado de la CA. 
+Tenemos que modificar la configuración del pod `kube-controller-manager` indicado el proveedor cloud que vamos autilizar y el fichero de configuración que debe utilizar (`cloud.conf`). Además debemos asegurarnos que el pod tiene acceso al fichero de configuración `cloud.conf` y al certificado de la CA. 
 Para realizar la configuración debemos modificar el fichero `/etc/kubernetes/manifests/kube-controller-manager.yaml` en el nodo master de la siguiente forma:
 
 <pre>
@@ -75,7 +75,86 @@ Una vez modificado correctamente el fichero, el pod `kube-controller-manager` se
 
     kubectl describe pod kube-controller-manager -n kube-system | grep '/etc/kubernetes/cloud.conf'
 
-    - cloud-config=/etc/kubernetes/cloud.conf
-    /etc/kubernetes/cloud.conf from cloud-config (ro)
-    Path: /etc/kubernetes/cloud.conf
+          --cloud-config=/etc/kubernetes/cloud.conf
+          /etc/kubernetes/cloud.conf from cloud-config (ro)
+        Path:          /etc/kubernetes/cloud.conf
 
+## Configurando kubelet
+
+A continuación debemos **reiniciar el componente `kubelet` en el master y en los nodos del cluster** modificando su configuración para indicarles el proveedor cloud que vamos a utilizar y el fichero de configuración que debe utilizar (`cloud.conf`). Para ello modificamos el fichero `/etc/systemd/system/kubelet.service.d/10-kubeadm.conf` añadiendo la siguiente línea:
+
+    Environment="KUBELET_EXTRA_ARGS=--cloud-provider=openstack --cloud-config=/etc/kubernetes/cloud.conf"
+
+Y reiniciamos el servicio:
+
+    systemctl daemon-reload
+    systemctl restart kubelet
+
+Y comprobamos que el servicio está ejecutándose:
+
+    ps xau | grep /usr/bin/kubelet
+
+    root      5323 14.0  3.6 354508 74652 ?        Ssl  17:52   0:01 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --pod-manifest-path=/etc/kubernetes/manifests --allow-privileged=true --network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin --cluster-dns=10.96.0.10 --cluster-domain=cluster.local --authorization-mode=Webhook --client-ca-file=/etc/kubernetes/pki/ca.crt --cadvisor-port=0 --rotate-certificates=true --cert-dir=/var/lib/kubelet/pki --cloud-provider=openstack --cloud-config=/etc/kubernetes/cloud.conf
+
+## Probando la creación dinámica volúmenes por Cinder
+
+Lo primero es crear un recurso del tipo [`StorageClass`](https://kubernetes.io/docs/concepts/storage/storage-classes/) Que nos permite configurar un origen o clase de almacenamiento disponible en el cluster. Para ello creamos el fichero `cinder-sc.yaml`:
+
+    apiVersion: storage.k8s.io/v1beta1
+    kind: StorageClass
+    metadata:
+      name: standard
+      annotations:
+        storageclass.beta.kubernetes.io/is-default-class: "true"
+      labels:
+        kubernetes.io/cluster-service: "true"
+        addonmanager.kubernetes.io/mode: EnsureExists
+    provisioner: kubernetes.io/cinder
+
+Y creamos el recurso:
+
+    kubectl create -f cinder-sc.yaml 
+    storageclass.storage.k8s.io "standard" created
+
+    kubectl get sc
+    NAME                 PROVISIONER            AGE
+    standard (default)   kubernetes.io/cinder   40s
+
+A continuación vamos a crear un recurso `PersistentVolumeClaim` con el fichero `demo-cinder-pvc.yaml`:
+
+    kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: cinder-claim
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "standard"
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+
+Y lo creamos:
+
+    kubectl create -f demo-cinder-pvc.yaml 
+    persistentvolumeclaim "cinder-claim" created
+
+Y podemos comprobar como de forma dinámica se ha creado un recurso `PersistentVolumen`:
+
+    kubectl get pv,pvc
+    
+    NAME                                                         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS       CLAIM                  STORAGECLASS   REASON    AGE
+    persistentvolume/pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75    1Gi        RWO            Delete           Bound        default/cinder-claim   standard                 4s
+
+    NAME                                 STATUS    VOLUME                                      CAPACITY   ACCESS MODES       STORAGECLASS   AGE
+    persistentvolumeclaim/cinder-claim   Bound      pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75   1Gi        RWO            standard       17s
+
+Además podemos comprobar como realmente se ha creado un volumen en OpenStack:
+
+    openstack volume list                   
+    +-------------------------------------- +----------------------------------------------------------  ---+-----------+------+-------------+
+    | ID                                   | Name                                                         | Status    |  Size | Attached to |
+    +-------------------------------------- +----------------------------------------------------------  ---+-----------+------+-------------+
+    | a6f6e873-5c1d-40d0-be26-c8307bf4edf3 |    kubernetes-dynamic-pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75     | available |    1 |             |
+    +-------------------------------------- +----------------------------------------------------------  ---+-----------+------+-------------+
