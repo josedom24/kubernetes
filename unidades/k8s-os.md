@@ -160,7 +160,7 @@ Además podemos comprobar como realmente se ha creado un volumen en OpenStack:
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
     | ID                                   | Name                                                        | Status    |  Size |Attached to |
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
-    | e952c9c8-b423-451f-b6a0-32521e0a6fe6 | kubernetes-dynamic-pvc-569773b8-682a-11e8-931d-fa163e99cb75 | in-use |    1 | available |    1 |             |         |
+    | e952c9c8-b423-451f-b6a0-32521e0a6fe6 | kubernetes-dynamic-pvc-569773b8-682a-11e8-931d-fa163e99cb75 | in-use    |    1 | available   | 
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
 
 ## Utilizando el volumen en un despliegue
@@ -261,4 +261,4 @@ Y comprobamos la ip flotante asignada:
 
 Por último podemos acceder al servidor web utilizando la IP flotante del balanceador que hemos creado:
 
-![nginx](nginx-lb.png)
+![nginx](img/nginx-lb.png)
