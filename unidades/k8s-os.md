@@ -11,7 +11,10 @@ En esta unidad vamos a configurar el *Kube Controller Manager* para comunicarse 
 
 ## Integración de Kubernetes y OpenStack con Kubeadm
 
-Vamos a partir de una instalación de kubernetes con kubeadm (puedes seguir el apartado [Instalación de kubernetes con kubeadm](kubeadm.md)).
+Vamos a partir de una instalación de kubernetes con kubeadm (puedes seguir el apartado [Instalación de kubernetes con kubeadm](kubeadm.md)). En esta instalación he usado el plugin CNI `wave`:
+
+    sysctl net.bridge.bridge-nf-call-iptables=1
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 > Si necesitas reinstalar kubeadm debes ejecutar `kubeadm reset` en todos los nodos del cluster.
 
@@ -144,11 +147,12 @@ Y podemos comprobar como de forma dinámica se ha creado un recurso `PersistentV
 
     kubectl get pv,pvc
     
-    NAME                                                         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS       CLAIM                  STORAGECLASS   REASON    AGE
-    persistentvolume/pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75    1Gi        RWO            Delete           Bound        default/cinder-claim   standard                 4s
+    NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY    STATUS    CLAIM                  STORAGECLASS   REASON    AGE
+    persistentvolume/pvc-569773b8-682a-11e8-931d-fa163e99cb75   1Gi        RWO            Delete           Bound        default/cinder-claim   standard                 19s
 
-    NAME                                 STATUS    VOLUME                                      CAPACITY   ACCESS MODES       STORAGECLASS   AGE
-    persistentvolumeclaim/cinder-claim   Bound      pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75   1Gi        RWO            standard       17s
+    NAME                                 STATUS    VOLUME                                     CAPACITY   ACCESS     MODES   STORAGECLASS   AGE
+    persistentvolumeclaim/cinder-claim   Bound     pvc-569773b8-682a-11e8-931d-fa163e99cb75   1Gi        RWO            standard       19s
+
 
 Además podemos comprobar como realmente se ha creado un volumen en OpenStack:
 
@@ -156,6 +160,105 @@ Además podemos comprobar como realmente se ha creado un volumen en OpenStack:
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
     | ID                                   | Name                                                        | Status    |  Size |Attached to |
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
-    | a6f6e873-5c1d-40d0-be26-c8307bf4edf3 | kubernetes-dynamic-pvc-577fe8a8-65c7-11e8-a509-fa163e99cb75 | available |    1 |             |
+    | e952c9c8-b423-451f-b6a0-32521e0a6fe6 | kubernetes-dynamic-pvc-569773b8-682a-11e8-931d-fa163e99cb75 | in-use |    1 | available |    1 |             |         |
     +--------------------------------------+-------------------------------------------------------------+-----------+------+-------------+
 
+## Utilizando el volumen en un despliegue
+
+A continuación vamos a crear un deployment que cree un servidor nginx cuyo `DocumentRoot` va a estar montado en el volumen que hemos creado, para ello creamos el fichero `nginx-deployment.yaml`:
+
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+      name: nginx
+      namespace: default
+      labels:
+        app: nginx
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: nginx
+        spec:
+          containers:
+          - image: nginx
+            name: nginx
+            volumeMounts:
+              - mountPath: /usr/share/nginx/html
+                name: vol
+            ports:
+            - name: http
+              containerPort: 80
+          volumes:
+            - name: vol
+              persistentVolumeClaim:
+                claimName: cinder-claim
+
+Creamos el deployment y comprobamos que el volumen de OpenStack se ha conectado con el nodo donde se ha creado el pod:
+
+    openstack volume list      
+    
+    +--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------+
+    | ID                                   | Name                                                        |  Status| Size | Attached to                    |
+    +--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------+
+    | e952c9c8-b423-451f-b6a0-32521e0a6fe6 | kubernetes-dynamic-pvc-569773b8-682a-11e8-931d-fa163e99cb75 |  in-use|    1 | Attached to k8s-3 on /dev/vdb  |
+    +--------------------------------------+-------------------------------------------------------------+--------+------+--------------------------------+
+
+Evidentemente el volumen que acabamos de crear está vacío, por lo tanto vamos a crear un fichero `index.html`:
+
+    kubectl exec -it nginx-695ffcfd59-js75s -- bash -c "echo '<h1>Kubernetes and Openstack</h1>'>/usr/share/nginx/html/index.html"
+
+## Uso de servicio tipo LoadBalancer
+
+Ya hemos comprobado como podemos crear de forma dínamica volúmenes en cinder desde Kubernetes, en este apartado vamos a crear un servicio de tipo *LoadBalancer*, que va a crear en el comoponente `neutron` de OpenStack un balanceador de carga con una IP flotente asignada que nos permiteirá acceder al servidor nginx. Para ello creamos un fichero nginx.srv.yaml de la siguiente forma:
+
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx
+      namespace: default
+    spec:
+      type: LoadBalancer
+      ports:
+      - name: http
+        port: 80
+        targetPort: http
+      selector:
+        app: nginx
+
+
+Creamos el servicio, y al cabo de unos segundos comprobamos la IP flotante asignada al balanceador de carga de OpenStack:
+
+    kubectl create -f nginx-srv.yaml
+    service "nginx" created
+
+    kubectl get services
+    NAME         TYPE           CLUSTER-IP    EXTERNAL-IP      PORT(S)        AGE
+    ...
+    nginx        LoadBalancer   10.98.19.43   172.22.201.196   80:32415/TCP   18s
+
+Podemos comprobar en OpenStack que le balanceador se ha creado:
+
+    neutron lbaas-loadbalancer-list                                                                                               
+
+    +--------------------------------------+----------------------------------+-------------+---------------------+----------+
+    | id                                   | name                             | vip_address | provisioning_status | provider |
+    +--------------------------------------+----------------------------------+-------------+---------------------+----------+
+    | 6b4d7557-4762-4d77-bdb4-b26f77b4d471 | a56a875a9683111e8931dfa163e99cb7 | 10.0.0.8    | ACTIVE              | haproxy  |
+    +--------------------------------------+----------------------------------+-------------+---------------------+----------+
+
+Y comprobamos la ip flotante asignada:
+
+    openstack floating ip list
+
+    +--------------------------------------+---------------------+------------------+--------------------------------------+--------------------------------------  +----------------------------------+
+    | ID                                   | Floating IP Address | Fixed IP Address | Port                                 | Floating Network                     |     Project                          |
+    +--------------------------------------+---------------------+------------------+--------------------------------------+--------------------------------------  +----------------------------------+
+    ...
+    | b0cfa51e-2cf8-40bf-9e8e-d37430883889 | 172.22.201.196      | 10.0.0.8         | 17c66af7-8783-45a4-8d69-e1cf7723894f | 49812d85-8e7a-4c31-baa2-d427692f6568 |     d8799b3f93124dd7b79cde85730dff6d |
+    ...
+
+Por último podemos acceder al servidor web utilizando la IP flotante del balanceador que hemos creado:
+
+![nginx](nginx-lb.png)
