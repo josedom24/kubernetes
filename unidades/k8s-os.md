@@ -263,3 +263,8 @@ Y comprobamos la ip flotante asignada:
 Por último podemos acceder al servidor web utilizando la IP flotante del balanceador que hemos creado:
 
 ![nginx](img/nginx-lb.png)
+
+#### Enlaces de referencia
+
+* [http://henriquetruta.github.io/openstack-cloud-provider/](http://henriquetruta.github.io/openstack-cloud-provider/)
+* [https://medium.com/@arthur.souzamiranda/kubernetes-with-openstack-cloud-provider-current-state-and-upcoming-changes-part-1-of-2-48b161ea449a](https://medium.com/@arthur.souzamiranda/kubernetes-with-openstack-cloud-provider-current-state-and-upcoming-changes-part-1-of-2-48b161ea449a)
