@@ -212,7 +212,7 @@ Evidentemente el volumen que acabamos de crear está vacío, por lo tanto vamos 
 
 ## Uso de servicio tipo LoadBalancer
 
-Ya hemos comprobado como podemos crear de forma dínamica volúmenes en cinder desde Kubernetes, en este apartado vamos a crear un servicio de tipo *LoadBalancer*, que va a crear en el comoponente `neutron` de OpenStack un balanceador de carga con una IP flotente asignada que nos permiteirá acceder al servidor nginx. Para ello creamos un fichero nginx.srv.yaml de la siguiente forma:
+Ya hemos comprobado como podemos crear de forma dínamica volúmenes en cinder desde Kubernetes, en este apartado vamos a crear un servicio de tipo *LoadBalancer*, que va a crear en el comoponente `neutron` de OpenStack un balanceador de carga con una IP flotente asignada que nos permiteirá acceder al servidor nginx. Para ello creamos un fichero `nginx-srv.yaml` de la siguiente forma:
 
     apiVersion: v1
     kind: Service
