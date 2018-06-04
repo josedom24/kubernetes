@@ -153,6 +153,7 @@ Y podemos comprobar como de forma dinámica se ha creado un recurso `PersistentV
     NAME                                 STATUS    VOLUME                                     CAPACITY   ACCESS     MODES   STORAGECLASS   AGE
     persistentvolumeclaim/cinder-claim   Bound     pvc-569773b8-682a-11e8-931d-fa163e99cb75   1Gi        RWO            standard       19s
 
+Como podemos comprobar al crear un volumen en Kubernetes desde Cinder el modo de acceso es RWO: Escritura y lectura para un sólo nodo.
 
 Además podemos comprobar como realmente se ha creado un volumen en OpenStack:
 
