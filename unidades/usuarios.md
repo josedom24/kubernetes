@@ -40,5 +40,5 @@ Cuando instalamos Kubernetes se crea una Autoridad Certificadora (CA):
 
 Todos los certificados firmados por dicha CA van a ser aceptados por el servidor Kubernetes API. Por lo tanto vamos a crear un certificado con OpenSSL que posteriormente el administrador del cluster firmará con la CA. En el certificado que vamos a crear hay que tener en cuenta dos campos:
 
-* Common Name (CN): Kuberntes interpretará el valor de este campo como el **nombre del usuario*.
-* Organization (O): Kuberntes interpretará el valor de este campo como el **grupo del usuario*.
+* Common Name (CN): Kuberntes interpretará el valor de este campo como el **nombre del usuario**.
+* Organization (O): Kuberntes interpretará el valor de este campo como el **grupo del usuario**.
