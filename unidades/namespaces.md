@@ -86,6 +86,18 @@ Y creamos el servicio asociado:
     NAME      TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
     nginx     NodePort   10.107.121.169   <none>        80:30352/TCP   10s
 
+## Configurando un namespace por defecto
+
+Podemos indicar en un determinado contexto (un contexto determina el cluter y el usuario que podemos utilizar) un `namespace`, de tal manera que cuando utilicemos dicho contexto se va a utilizar el `namespace` indicado, y no será necesario indicarlo con la opción `-n`. Para ello es necesario determinar el contexto en el que estamos trabajando:
+
+    kubectl config current-context
+    kubernetes-admin@kubernetes
+
+Y a continuación modifico el contexto añadiendo el namespace que quiero usar por defecto.
+
+    kubectl config set-context kubernetes-admin@kubernetes --namespace=proyecto1
+    Context "kubernetes-admin@kubernetes" modified.
+
 ## Eliminando un namespace
 
 Al eliminar un `namespace` se borran todos los recursos que hemos creado en él. 
