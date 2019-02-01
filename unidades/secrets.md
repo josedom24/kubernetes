@@ -1,6 +1,6 @@
 # Configurando nuestras aplicaciones: Secrets
 
-Los [`Secrets`](https://kubernetes.io/docs/concepts/configuration/secret/) nos permiten guardar información sensible que será codificada. Por ejemplo,nos permite guarda contraseñas, clasves shh, ...
+Los [`Secrets`](https://kubernetes.io/docs/concepts/configuration/secret/) nos permiten guardar información sensible que será codificada. Por ejemplo,nos permite guarda contraseñas, claves ssh, ...
 
 Al crear un `Secret` los valores se pueden indicar desde un directorio, un fichero o un literal.
 
