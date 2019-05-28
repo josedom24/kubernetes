@@ -102,7 +102,7 @@ Si el usuario quiere guardar las credenciales en otro fichero:
 
 ## Acceso al cluster con el nuevo usuario
 
-Suponemos que seguimos usando nuestro fichero de configuración ~/.kube/config
+Suponemos que seguimos usando nuestro fichero de configuración `~/.kube/config`:
 
     export KUBECONFIG=~/.kube/config
 
