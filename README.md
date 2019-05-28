@@ -22,3 +22,13 @@
 * [Almacenamiento disponible en Kubernetes: PersistentVolumen](unidades/pv.md)
 * [Solicitud de almacenamiento en Kubernetes: PersistentVolumenClaims](unidades/pvc.md)
 * [Ejemplo: Desplegando WordPress con MariaDB con almacenamiento persistente](unidades/wordpress2.md)
+* Instalando aplicaciones con Helm en Kubernetes
+* Usuarios en Kubernetes
+* RBAC. Gestión de autorizaciones en Kubernetes: Role y RoleBinding
+* RBAC. Gestión de autorizaciones en Kubernetes: ClusterRole y ClusterRoleBinding
+* RBAC. Gestión de autorizaciones en Kubernetes: ServiceAccount
+* Cuotas y Limites en Kuberenetes
+* Políticas de red en Kubernetes
+
+
+

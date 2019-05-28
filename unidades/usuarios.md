@@ -1,6 +1,6 @@
 # Introducción a la autentificación de usuarios en Kubernetes
 
-Hasta ahora hemos accedido a nuestro cluster de Kubernetes con el usaurio `admon` usando el fichero de credenciales `~/.kube/mycluster.conf`:
+Hasta ahora hemos accedido a nuestro cluster de Kubernetes con el usaurio `admin` usando el fichero de credenciales `~/.kube/mycluster.conf`:
 
     export KUBECONFIG=~/.kube/mycluster.conf 
 
@@ -42,3 +42,5 @@ Todos los certificados firmados por dicha CA van a ser aceptados por el servidor
 
 * Common Name (CN): Kubernetes interpretará el valor de este campo como el **nombre del usuario**.
 * Organization (O): Kubernetes interpretará el valor de este campo como el **grupo del usuario**.
+
+
