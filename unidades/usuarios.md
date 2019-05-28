@@ -85,7 +85,8 @@ Si el usuario esta trabajando con el fichero de configuración por defecto de ku
 
 2. Añadimos el nuevo contexto:
 
-        kubectl config set-context usuario1-context --cluster=kubernetes --namespace=proyecto1 --user=usuario1
+        kubectl config set-context usuario1-context --cluster=kubernetes \
+        --namespace=proyecto1 --user=usuario1
 
 Si el usuario quiere guardar las credenciales en otro fichero:
     
