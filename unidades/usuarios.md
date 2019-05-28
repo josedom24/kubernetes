@@ -43,4 +43,6 @@ Todos los certificados firmados por dicha CA van a ser aceptados por el servidor
 * Common Name (CN): Kubernetes interpretará el valor de este campo como el **nombre del usuario**.
 * Organization (O): Kubernetes interpretará el valor de este campo como el **grupo del usuario**.
 
+### Creación de usuarios
 
+Vamos a crear 
